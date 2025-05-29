@@ -39,11 +39,7 @@ import {
 import { useSupabaseData } from "@/hooks/use-supabase-data"
 import { toast } from "sonner"
 import { createClient } from '@supabase/supabase-js'
-
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-const supabase = createClient(supabaseUrl, supabaseKey)
+import { supabase } from '@/lib/supabase'
 
 export default function AdminPage() {
   const router = useRouter()
