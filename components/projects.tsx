@@ -11,10 +11,10 @@ export default function Projects() {
 
   if (loading) {
     return (
-      <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-900/50">
+      <section id="projects" className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-blue-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
               Our Projects
             </h2>
             <p className="text-lg text-foreground/80 max-w-3xl mx-auto">Loading projects...</p>
@@ -25,10 +25,17 @@ export default function Projects() {
   }
 
   return (
-    <section id="projects" className="py-20 bg-gray-50 dark:bg-gray-900/50">
+    <section id="projects" className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-background">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-secondary/5 rounded-full blur-[100px]" />
+        <div className="absolute top-60 -right-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-primary/5 rounded-full blur-[100px]" />
+        <div className="absolute -bottom-40 left-1/2 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-secondary/5 rounded-full blur-[100px]" />
+      </div>
+
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-blue-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
             Our Projects
           </h2>
           <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
@@ -41,7 +48,7 @@ export default function Projects() {
           {projects?.map((project, index) => (
             <Card
               key={project.id}
-              className="group overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-2"
+              className="group overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-2 bg-gradient-to-br from-secondary/20 to-primary/10 backdrop-blur-sm border border-border/10 hover:border-border/20"
             >
               <div className="relative overflow-hidden">
                 <img
@@ -75,7 +82,7 @@ export default function Projects() {
                 <p className="text-foreground/70 mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tech_stack.map((tech, techIndex) => (
-                    <Badge key={techIndex} variant="secondary" className="text-xs">
+                    <Badge key={techIndex} variant="secondary" className="text-xs bg-primary/10 text-primary-foreground">
                       {tech}
                     </Badge>
                   ))}

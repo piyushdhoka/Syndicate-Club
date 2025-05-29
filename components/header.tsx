@@ -51,7 +51,7 @@ export default function Header() {
           isScrolled ? "bg-background/98 shadow-sm backdrop-blur-sm" : "bg-transparent"
         } ${isVisible ? "translate-y-0" : "-translate-y-full"}`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center group cursor-pointer">
@@ -67,7 +67,6 @@ export default function Header() {
                 <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
                   Syndicate
                 </h1>
-                <p className="text-xs text-foreground/60 -mt-1">Tech Club</p>
               </div>
             </div>
 

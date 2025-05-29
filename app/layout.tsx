@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Syndicate X - Innovate. Collaborate. Excel.",
-  description: "A community of passionate technologists, collaborate on real-world projects, and develop the skills to lead in tomorrow's tech landscape.",
+  description: "Empowering the next generation of tech leaders through innovation and collaboration.",
   manifest: "/site.webmanifest",
   icons: {
     icon: [
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://syndicate-x.vercel.app',
     title: 'Syndicate X - Empowering Future Innovators',
-    description: "Join a community of passionate technologists, collaborate on real-world projects, and develop the skills to lead in tomorrow's tech landscape.",
+    description: "Empowering the next generation of tech leaders through innovation and collaboration.",
     siteName: 'Syndicate X',
     images: [
       {
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Syndicate X - Empowering Future Innovators',
-    description: "Join a community of passionate technologists, collaborate on real-world projects, and develop the skills to lead in tomorrow's tech landscape.",
+    description: "Empowering the next generation of tech leaders through innovation and collaboration.",
     images: ['/og-image.png'],
     creator: '@syndicatex',
   },

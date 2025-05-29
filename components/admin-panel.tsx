@@ -11,7 +11,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import {
-  Lock,
   Plus,
   Edit,
   Trash2,
@@ -413,16 +412,6 @@ export default function AdminPanel() {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          size="sm"
-          variant="ghost"
-          className="group rounded-full shadow-lg bg-background/80 backdrop-blur-sm border border-border hover:bg-background/90 hover:scale-110 hover:shadow-xl transition-all duration-300"
-          aria-label="Admin Panel"
-        >
-          <Lock className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
-        </Button>
-      </DialogTrigger>
       <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">

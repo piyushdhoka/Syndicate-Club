@@ -11,37 +11,37 @@ import { cn } from "@/lib/utils"
 
 const shimmer = "relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent"
 
-const cardHoverEffect = "group relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-r before:from-gray-400/20 before:via-gray-300/20 before:to-gray-400/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300 before:shadow-[0_0_15px_rgba(0,0,0,0.1)] hover:before:shadow-[0_0_20px_rgba(0,0,0,0.15)]"
+const cardHoverEffect = "group relative before:absolute before:inset-0 before:rounded-lg before:p-[1px] before:bg-gradient-to-r before:from-primary/5 before:via-secondary/5 before:to-primary/5 before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300"
 
 const ShimmerCard = ({ className }: { className?: string }) => (
-  <Card className={cn("bg-gradient-to-br from-background to-muted border-border shadow-lg", className)}>
+  <Card className={cn("bg-gradient-to-br from-secondary/10 to-primary/5 border border-border/5", className)}>
     <CardContent className="p-6">
       <div className={cn("w-full h-full space-y-4", shimmer)}>
-        <div className="h-8 w-3/4 rounded-md bg-muted" />
-        <div className="h-4 w-1/2 rounded-md bg-muted" />
-        <div className="h-4 w-full rounded-md bg-muted" />
-        <div className="h-4 w-2/3 rounded-md bg-muted" />
+        <div className="h-8 w-3/4 rounded-md bg-muted/10" />
+        <div className="h-4 w-1/2 rounded-md bg-muted/10" />
+        <div className="h-4 w-full rounded-md bg-muted/10" />
+        <div className="h-4 w-2/3 rounded-md bg-muted/10" />
       </div>
     </CardContent>
   </Card>
 )
 
 const ShimmerMemberCard = () => (
-  <Card className="bg-gradient-to-br from-background to-muted border-border shadow-lg">
+  <Card className="bg-gradient-to-br from-secondary/10 to-primary/5 border border-border/5">
     <CardContent className="p-6">
       <div className="flex items-center space-x-4 mb-4">
         <div className={cn("relative w-16 h-16 rounded-full overflow-hidden", shimmer)}>
-          <div className="w-full h-full bg-muted" />
+          <div className="w-full h-full bg-muted/10" />
         </div>
         <div className="space-y-2 flex-1">
-          <div className={cn("h-5 w-2/3 rounded-md bg-muted", shimmer)} />
-          <div className={cn("h-4 w-1/2 rounded-md bg-muted", shimmer)} />
+          <div className={cn("h-5 w-2/3 rounded-md bg-muted/10", shimmer)} />
+          <div className={cn("h-4 w-1/2 rounded-md bg-muted/10", shimmer)} />
         </div>
       </div>
       <div className="space-y-2">
-        <div className={cn("h-4 w-full rounded-md bg-muted", shimmer)} />
-        <div className={cn("h-4 w-5/6 rounded-md bg-muted", shimmer)} />
-        <div className={cn("h-4 w-4/6 rounded-md bg-muted", shimmer)} />
+        <div className={cn("h-4 w-full rounded-md bg-muted/10", shimmer)} />
+        <div className={cn("h-4 w-5/6 rounded-md bg-muted/10", shimmer)} />
+        <div className={cn("h-4 w-4/6 rounded-md bg-muted/10", shimmer)} />
       </div>
     </CardContent>
   </Card>
@@ -101,16 +101,16 @@ const MemberCarousel = ({ members }: { members: any[] }): JSX.Element => {
             return (
               <div
                 key={member.id}
-                className="absolute inset-0 rounded-xl overflow-hidden border-2"
+                className="absolute inset-0 rounded-xl overflow-hidden border"
                 style={{
-                  borderColor: `rgba(${colors[index % colors.length]}, 0.3)`,
+                  borderColor: `rgba(${colors[index % colors.length]}, 0.05)`,
                   transform: `rotateY(${(360 / members.length) * index}deg) translateZ(280px)`,
-                  background: `linear-gradient(135deg, rgba(${colors[index % colors.length]}, 0.15) 0%, rgba(${colors[index % colors.length]}, 0.12) 100%)`,
-                  boxShadow: `0 0 20px rgba(${colors[index % colors.length]}, 0.15)`
+                  background: `linear-gradient(135deg, rgba(${colors[index % colors.length]}, 0.02) 0%, rgba(${colors[index % colors.length]}, 0.01) 100%)`,
+                  boxShadow: `0 0 10px rgba(${colors[index % colors.length]}, 0.02)`
                 }}
               >
-                <div className="relative w-full h-full p-4 flex flex-col items-center bg-gradient-to-br from-blue-50/95 to-blue-100/95 dark:from-blue-950/95 dark:to-blue-900/95 backdrop-blur-sm">
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden mb-4 border-2 border-blue-500/20">
+                <div className="relative w-full h-full p-4 flex flex-col items-center bg-gradient-to-br from-secondary/5 to-primary/5">
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden mb-4 border border-primary/5">
                     <img
                       src={
                         member.github 
@@ -127,10 +127,10 @@ const MemberCarousel = ({ members }: { members: any[] }): JSX.Element => {
                     />
                   </div>
                   <div className="text-center mb-6">
-                    <h3 className={`text-base font-semibold ${theme === 'dark' ? 'text-white' : 'text-blue-600'}`}>
+                    <h3 className="text-base font-semibold text-foreground">
                       {member.name}
                     </h3>
-                    <p className={`text-xs ${theme === 'dark' ? 'text-white/80' : 'text-blue-600/70'}`}>
+                    <p className="text-xs text-foreground/70">
                       {member.role}
                     </p>
                   </div>
@@ -139,11 +139,7 @@ const MemberCarousel = ({ members }: { members: any[] }): JSX.Element => {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className={`hover:bg-opacity-20 transition-colors duration-300 h-10 w-10 p-0 ${
-                          theme === 'dark' 
-                            ? 'text-white hover:bg-white' 
-                            : 'text-blue-600 hover:bg-blue-600'
-                        }`}
+                        className="hover:bg-primary/5 transition-colors duration-300 h-10 w-10 p-0 text-foreground/70 hover:text-foreground"
                         asChild
                       >
                         <a
@@ -160,11 +156,7 @@ const MemberCarousel = ({ members }: { members: any[] }): JSX.Element => {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className={`hover:bg-opacity-20 transition-colors duration-300 h-10 w-10 p-0 ${
-                          theme === 'dark' 
-                            ? 'text-white hover:bg-white' 
-                            : 'text-blue-600 hover:bg-blue-600'
-                        }`}
+                        className="hover:bg-primary/5 transition-colors duration-300 h-10 w-10 p-0 text-foreground/70 hover:text-foreground"
                         asChild
                       >
                         <a
@@ -249,13 +241,19 @@ const Board = (): JSX.Element => {
 
   if (loading) {
     return (
-      <section id="board" className="py-20 bg-background text-foreground">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="board" className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-background">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -left-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-secondary/5 rounded-full blur-[100px]" />
+          <div className="absolute top-60 -right-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-primary/5 rounded-full blur-[100px]" />
+          <div className="absolute -bottom-40 left-1/2 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-secondary/5 rounded-full blur-[100px]" />
+        </div>
+
+        <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-blue-400 bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
               Our Leadership Team
             </h2>
-            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">Loading team members...</p>
+            <p className="text-lg text-foreground/80 max-w-3xl mx-auto">Loading team members...</p>
           </div>
 
           {/* Stats Section Shimmer */}
@@ -277,13 +275,19 @@ const Board = (): JSX.Element => {
   }
 
   return (
-    <section id="board" className="py-20 bg-background text-foreground">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="board" className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-background">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-secondary/5 rounded-full blur-[100px]" />
+        <div className="absolute top-60 -right-40 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-primary/5 rounded-full blur-[100px]" />
+        <div className="absolute -bottom-40 left-1/2 w-64 sm:w-80 md:w-96 h-64 sm:h-80 md:h-96 bg-secondary/5 rounded-full blur-[100px]" />
+      </div>
+
+      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-blue-400 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-secondary bg-clip-text text-transparent">
             Our Leadership Team
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-lg text-foreground/80 max-w-3xl mx-auto">
             Meet the passionate individuals who drive Syndicate forward and make our community thrive.
           </p>
         </div>
@@ -292,13 +296,13 @@ const Board = (): JSX.Element => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {stats.map((stat, index) => (
             <div key={index} className={cardHoverEffect}>
-              <Card className="relative bg-gradient-to-br from-background to-muted border-border shadow-lg transition-transform duration-300 group-hover:scale-[0.98]">
+              <Card className="relative bg-gradient-to-br from-secondary/10 to-primary/5 border border-border/5 hover:border-border/10 transition-all duration-300 group-hover:scale-[0.98]">
                 <CardContent className="p-6">
-                  <stat.icon className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                  <stat.icon className="w-8 h-8 text-primary/70 mx-auto mb-3" />
                   <div className="text-3xl font-bold text-foreground mb-2">
                     <AnimatedCounter value={stat.value} />
                   </div>
-                  <p className="text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-sm text-foreground/70">{stat.label}</p>
                 </CardContent>
               </Card>
             </div>
