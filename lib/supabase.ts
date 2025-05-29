@@ -1,17 +1,10 @@
 import { createClient } from "@supabase/supabase-js"
 
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
-  throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_URL')
-}
-if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-  throw new Error('Missing env.NEXT_PUBLIC_SUPABASE_ANON_KEY')
-}
+const supabaseUrl = 'https://djxwxvmkpgkdbjqwfwlu.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqeHd4dm1rcGdrZGJqcXdmd2x1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDgzNjY3MTIsImV4cCI6MjA2Mzk0MjcxMn0.je8Ikz6UrXC4qLNr4cIvtzMEenW117UCNo3jHtketmI'
 
 // Create Supabase client
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // Check if Supabase is available
 export const isSupabaseAvailable = () => {

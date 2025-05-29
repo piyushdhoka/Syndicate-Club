@@ -9,8 +9,8 @@ import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Syndicate X - Innovate. Collaborate. Excel.",
-  description: "Empowering the next generation of tech leaders through innovation and collaboration.",
+  title: "Syndicate ",
+  
   manifest: "/site.webmanifest",
   icons: {
     icon: [
