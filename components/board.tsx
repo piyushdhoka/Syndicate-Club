@@ -147,12 +147,12 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
       </div>
 
       {/* Enhanced 3D Carousel */}
-      <div className="relative w-full h-[650px] overflow-hidden -mt-12 mb-12">
+      <div className="relative w-full h-[680px] overflow-hidden -mt-12 mb-12">
         <div className="absolute inset-0 flex items-center justify-center">
           <div 
             ref={carouselRef}
             className={cn(
-              "relative w-[220px] h-[300px] carousel-3d",
+              "relative w-[240px] h-[320px] carousel-3d",
               isPaused && "paused",
               hoveredIndex !== null && "hovered"
             )}
@@ -176,7 +176,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                   )}
                   style={{
                     borderColor: `rgba(${colors[colorIndex]}, ${isHovered ? 0.3 : 0.1})`,
-                    transform: `rotateY(${(360 / members.length) * index}deg) translateZ(280px)`,
+                    transform: `rotateY(${(360 / members.length) * index}deg) translateZ(300px)`,
                     background: `linear-gradient(135deg, 
                       rgba(${colors[colorIndex]}, ${isHovered ? 0.08 : 0.05}) 0%, 
                       rgba(${colors[colorIndex]}, ${isHovered ? 0.05 : 0.02}) 100%)`,
