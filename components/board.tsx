@@ -85,6 +85,7 @@ const ShimmerMemberCard = () => (
 const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false)
   const [selectedMember, setSelectedMember] = useState<Member | null>(null)
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const carouselRef = useRef<HTMLDivElement>(null)
 
   const colors = useMemo(() => [
@@ -132,12 +133,12 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
 
   return (
     <div className="relative w-full">
-      {/* Carousel Controls */}
+      {/* Enhanced Carousel Controls */}
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <Button
           size="sm"
           variant="outline"
-          className="bg-background/80 backdrop-blur-sm"
+          className="bg-background/90 backdrop-blur-md border-primary/20 hover:border-primary/40 hover:bg-primary/5 transition-all duration-300"
           onClick={() => setIsPaused(!isPaused)}
           aria-label={isPaused ? "Resume carousel" : "Pause carousel"}
         >
@@ -145,14 +146,15 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
         </Button>
       </div>
 
-      {/* 3D Carousel */}
+      {/* Enhanced 3D Carousel */}
       <div className="relative w-full h-[600px] overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <div 
             ref={carouselRef}
             className={cn(
               "relative w-[220px] h-[300px] carousel-3d",
-              isPaused && "paused"
+              isPaused && "paused",
+              hoveredIndex !== null && "hovered"
             )}
             style={{
               transformStyle: 'preserve-3d',
@@ -163,18 +165,26 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
               const linkedinUrl = getLinkedInUrl(member.linkedin || "")
               const githubUrl = getGitHubUrl(member.github || "")
               const colorIndex = index % colors.length
+              const isHovered = hoveredIndex === index
               
               return (
                 <div
                   key={member.id}
-                  className="absolute inset-0 rounded-xl overflow-hidden border cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-opacity-30"
+                  className={cn(
+                    "absolute inset-0 rounded-xl overflow-hidden border cursor-pointer transition-all duration-300",
+                    isHovered && "scale-105 z-10"
+                  )}
                   style={{
-                    borderColor: `rgba(${colors[colorIndex]}, 0.1)`,
+                    borderColor: `rgba(${colors[colorIndex]}, ${isHovered ? 0.3 : 0.1})`,
                     transform: `rotateY(${(360 / members.length) * index}deg) translateZ(280px)`,
-                    background: `linear-gradient(135deg, rgba(${colors[colorIndex]}, 0.05) 0%, rgba(${colors[colorIndex]}, 0.02) 100%)`,
-                    boxShadow: `0 4px 20px rgba(${colors[colorIndex]}, 0.1)`
+                    background: `linear-gradient(135deg, 
+                      rgba(${colors[colorIndex]}, ${isHovered ? 0.08 : 0.05}) 0%, 
+                      rgba(${colors[colorIndex]}, ${isHovered ? 0.05 : 0.02}) 100%)`,
+                    boxShadow: `0 4px 20px rgba(${colors[colorIndex]}, ${isHovered ? 0.2 : 0.1})`
                   }}
                   onClick={() => setSelectedMember(member)}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
@@ -185,7 +195,10 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                   aria-label={`View ${member.name}'s profile`}
                 >
                   <div className="relative w-full h-full p-4 flex flex-col items-center bg-gradient-to-br from-secondary/5 to-primary/5 hover:from-secondary/8 hover:to-primary/8 transition-all duration-300">
-                    <div className="relative w-24 h-24 rounded-full overflow-hidden mb-4 border-2 border-primary/10">
+                    <div className={cn(
+                      "relative w-24 h-24 rounded-full overflow-hidden mb-4 border-2 transition-all duration-300",
+                      isHovered ? "border-primary/30 scale-110" : "border-primary/10"
+                    )}>
                       <img
                         src={getGitHubAvatar(githubUrl)}
                         alt={member.name}
@@ -198,10 +211,16 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                       />
                     </div>
                     <div className="text-center mb-6">
-                      <h3 className="text-base font-semibold text-foreground mb-1">
+                      <h3 className={cn(
+                        "text-base font-semibold text-foreground mb-1 transition-all duration-300",
+                        isHovered && "text-lg"
+                      )}>
                         {member.name}
                       </h3>
-                      <p className="text-xs text-foreground/70 mb-2">
+                      <p className={cn(
+                        "text-xs text-foreground/70 mb-2 transition-all duration-300",
+                        isHovered && "text-sm"
+                      )}>
                         {member.role}
                       </p>
                       {member.bio && (
@@ -328,10 +347,11 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
       <style jsx global>{`
         .carousel-3d {
           animation: rotating 30s linear infinite;
+          will-change: transform;
         }
 
         .carousel-3d.paused,
-        .carousel-3d:hover {
+        .carousel-3d.hovered {
           animation-play-state: paused;
         }
 
@@ -348,13 +368,6 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
           .carousel-3d {
             animation: none;
           }
-        }
-
-        .line-clamp-2 {
-          overflow: hidden;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
         }
       `}</style>
     </div>
