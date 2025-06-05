@@ -87,11 +87,10 @@ const MemberCarousel = ({ members }: { members: any[] }): JSX.Element => {
     <div className="relative w-full h-[600px] overflow-hidden -mt-24">
       <div className="absolute inset-0 flex items-center justify-center">
         <div 
-          className="relative w-[220px] h-[300px]"
+          className="relative w-[220px] h-[300px] carousel-3d"
           style={{
             transformStyle: 'preserve-3d',
             transform: 'perspective(1200px) rotateX(-8deg)',
-            animation: 'rotating 30s linear infinite'
           }}
         >
           {members.map((member, index) => {
@@ -312,6 +311,14 @@ const Board = (): JSX.Element => {
         {/* Board Members Carousel */}
         <div className="relative">
           <style jsx global>{`
+            .carousel-3d {
+              animation: rotating 30s linear infinite;
+            }
+
+            .carousel-3d:hover {
+              animation-play-state: paused;
+            }
+
             @keyframes rotating {
               from {
                 transform: perspective(1200px) rotateX(-8deg) rotateY(0);
@@ -322,7 +329,7 @@ const Board = (): JSX.Element => {
             }
 
             @media (prefers-reduced-motion: reduce) {
-              .rotating {
+              .carousel-3d {
                 animation: none;
               }
             }
