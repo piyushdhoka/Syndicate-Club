@@ -147,7 +147,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
       </div>
 
       {/* Enhanced 3D Carousel */}
-      <div className="relative w-full h-[600px] overflow-hidden">
+      <div className="relative w-full h-[650px] overflow-hidden -mt-12 mb-12">
         <div className="absolute inset-0 flex items-center justify-center">
           <div 
             ref={carouselRef}
@@ -171,7 +171,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                 <div
                   key={member.id}
                   className={cn(
-                    "absolute inset-0 rounded-xl overflow-hidden border cursor-pointer transition-all duration-300",
+                    "absolute inset-0 rounded-xl overflow-hidden border cursor-pointer transition-all duration-300 backdrop-blur-[2px] hover:backdrop-blur-[1px]",
                     isHovered && "scale-105 z-10"
                   )}
                   style={{
@@ -527,7 +527,7 @@ const Board = (): JSX.Element => {
   }
 
   return (
-    <section id="board" className="relative py-16 sm:py-20 md:py-24 overflow-hidden bg-background">
+    <section id="board" className="relative pt-16 pb-12 sm:pt-20 sm:pb-16 md:pt-24 md:pb-20 overflow-hidden bg-background">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-r from-secondary/10 to-primary/10 rounded-full blur-[120px]" />
@@ -555,7 +555,7 @@ const Board = (): JSX.Element => {
         </motion.div>
 
         {/* Enhanced Stats Section */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {stats.map((stat, index) => (
             <motion.div 
               key={index} 

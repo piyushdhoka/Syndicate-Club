@@ -45,7 +45,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-24 bg-background">
+    <section id="contact" className="pt-0 pb-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent leading-tight">
