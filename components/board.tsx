@@ -117,26 +117,6 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
     }
   }, [])
 
-  // JS-driven rotation state for frame rate limiting
-  const [rotation, setRotation] = useState(0)
-  useEffect(() => {
-    if (isPaused || autoPaused) return
-    let frame: number
-    let lastTime = performance.now()
-    const fps = 20
-    const duration = 30_000 // 30s for a full rotation
-    const step = 360 / (duration / (1000 / fps))
-    const animate = (now: number) => {
-      if (now - lastTime >= 1000 / fps) {
-        setRotation((prev) => (prev + step) % 360)
-        lastTime = now
-      }
-      frame = requestAnimationFrame(animate)
-    }
-    frame = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(frame)
-  }, [isPaused, autoPaused])
-
   // Early return if no members
   if (!members || members.length === 0) {
     return (
@@ -222,7 +202,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
             )}
             style={{
               transformStyle: 'preserve-3d',
-              transform: `perspective(1200px) rotateX(-8deg) rotateY(${rotation}deg)`,
+              transform: 'perspective(1200px) rotateX(-8deg)',
             }}
           >
             {members.map((member, index) => {
@@ -413,15 +393,27 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
       {/* Enhanced Styles */}
       <style jsx global>{`
         .carousel-3d {
+          animation: rotating 30s linear infinite;
           will-change: transform;
         }
 
         .carousel-3d.paused,
         .carousel-3d.hovered {
+          animation-play-state: paused;
+        }
+
+        @keyframes rotating {
+          from {
+            transform: perspective(1200px) rotateX(-8deg) rotateY(0);
+          }
+          to {
+            transform: perspective(1200px) rotateX(-8deg) rotateY(360deg);
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .carousel-3d {
+            animation: none;
           }
         }
       `}</style>
