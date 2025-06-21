@@ -97,11 +97,22 @@ export const memberService = {
       return saved ? JSON.parse(saved) : this.getDefaultMembers()
     }
 
+    // Add a 1s timeout to Supabase fetch
+    const supabasePromise = supabase!.from("members").select("*").order("created_at", { ascending: true })
+    const timeoutPromise = new Promise<null>((resolve) => setTimeout(() => resolve(null), 1000))
+
+    let data: any = null
+    let error: any = null
     try {
-      const { data, error } = await supabase!.from("members").select("*").order("created_at", { ascending: true })
-
+      const result = await Promise.race([supabasePromise, timeoutPromise])
+      if (result === null) {
+        // Timeout: return local data instantly
+        const saved = localStorage.getItem("syndicateMembers")
+        return saved ? JSON.parse(saved) : this.getDefaultMembers()
+      }
+      data = (result as any).data
+      error = (result as any).error
       if (error) throw error
-
       // Backup to localStorage
       localStorage.setItem("syndicateMembers", JSON.stringify(data || []))
       return data || []

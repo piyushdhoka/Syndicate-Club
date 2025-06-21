@@ -14,9 +14,12 @@ interface Member {
   id: string
   name: string
   role: string
-  github?: string
-  linkedin?: string
-  bio?: string
+  bio: string
+  image: string
+  linkedin: string
+  github: string
+  created_at?: string
+  updated_at?: string
 }
 
 interface Stat {
@@ -86,7 +89,44 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
   const [isPaused, setIsPaused] = useState(false)
   const [selectedMember, setSelectedMember] = useState<Member | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [autoPaused, setAutoPaused] = useState(false)
   const carouselRef = useRef<HTMLDivElement>(null)
+
+  // Pause animation when tab is inactive or carousel is offscreen
+  useEffect(() => {
+    // Page Visibility API
+    const handleVisibility = () => {
+      setAutoPaused(document.hidden)
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+
+    // Intersection Observer
+    let observer: IntersectionObserver | null = null
+    if (carouselRef.current) {
+      observer = new window.IntersectionObserver(
+        ([entry]) => {
+          setAutoPaused((prev) => document.hidden || !entry.isIntersecting)
+        },
+        { threshold: 0.1 }
+      )
+      observer.observe(carouselRef.current)
+    }
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility)
+      if (observer && carouselRef.current) observer.unobserve(carouselRef.current)
+    }
+  }, [])
+
+  // Early return if no members
+  if (!members || members.length === 0) {
+    return (
+      <div className="relative w-full">
+        <div className="text-center py-12">
+          <p className="text-foreground/60">No team members available.</p>
+        </div>
+      </div>
+    )
+  }
 
   const colors = useMemo(() => [
     '30, 58, 138',   // Deep blue
@@ -124,12 +164,16 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
     return `https://github.com/${username}`
   }, [])
 
-  const getGitHubAvatar = useCallback((githubUrl: string) => {
-    if (!githubUrl || githubUrl === "#") return "/placeholder.svg"
-    
-    const username = githubUrl.split("/").pop()?.replace(/^@/, "")
-    return username ? `https://github.com/${username}.png` : "/placeholder.svg"
-  }, [])
+  // Debounced hover handler
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null)
+  const handleMouseEnter = (index: number) => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
+    hoverTimeout.current = setTimeout(() => setHoveredIndex(index), 30)
+  }
+  const handleMouseLeave = () => {
+    if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
+    hoverTimeout.current = setTimeout(() => setHoveredIndex(null), 30)
+  }
 
   return (
     <div className="relative w-full">
@@ -153,7 +197,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
             ref={carouselRef}
             className={cn(
               "relative w-[240px] h-[320px] carousel-3d",
-              isPaused && "paused",
+              (isPaused || autoPaused) && "paused",
               hoveredIndex !== null && "hovered"
             )}
             style={{
@@ -162,10 +206,13 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
             }}
           >
             {members.map((member, index) => {
-              const linkedinUrl = getLinkedInUrl(member.linkedin || "")
-              const githubUrl = getGitHubUrl(member.github || "")
+              const linkedinUrl = getLinkedInUrl(member.linkedin)
+              const githubUrl = getGitHubUrl(member.github)
               const colorIndex = index % colors.length
               const isHovered = hoveredIndex === index
+              
+              // Safe calculation for rotation angle
+              const rotationAngle = members.length > 0 ? (360 / members.length) * index : 0
               
               return (
                 <div
@@ -176,15 +223,15 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                   )}
                   style={{
                     borderColor: `rgba(${colors[colorIndex]}, ${isHovered ? 0.3 : 0.1})`,
-                    transform: `rotateY(${(360 / members.length) * index}deg) translateZ(300px)`,
+                    transform: `rotateY(${rotationAngle}deg) translateZ(300px)`,
                     background: `linear-gradient(135deg, 
                       rgba(${colors[colorIndex]}, ${isHovered ? 0.08 : 0.05}) 0%, 
                       rgba(${colors[colorIndex]}, ${isHovered ? 0.05 : 0.02}) 100%)`,
                     boxShadow: `0 4px 20px rgba(${colors[colorIndex]}, ${isHovered ? 0.2 : 0.1})`
                   }}
                   onClick={() => setSelectedMember(member)}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
+                  onMouseEnter={() => handleMouseEnter(index)}
+                  onMouseLeave={handleMouseLeave}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
@@ -200,7 +247,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                       isHovered ? "border-primary/30 scale-110" : "border-primary/10"
                     )}>
                       <img
-                        src={getGitHubAvatar(githubUrl)}
+                        src={member.image || "/placeholder.svg"}
                         alt={member.name}
                         className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                         loading="lazy"
@@ -294,7 +341,7 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
             >
               <div className="flex items-center gap-4 mb-4">
                 <img
-                  src={getGitHubAvatar(getGitHubUrl(selectedMember.github || ""))}
+                  src={selectedMember.image || "/placeholder.svg"}
                   alt={selectedMember.name}
                   className="w-16 h-16 rounded-full object-cover"
                 />
@@ -309,10 +356,10 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
               )}
               
               <div className="flex gap-2">
-                {getGitHubUrl(selectedMember.github || "") !== "#" && (
+                {getGitHubUrl(selectedMember.github) !== "#" && (
                   <Button asChild size="sm">
                     <a
-                      href={getGitHubUrl(selectedMember.github || "")}
+                      href={getGitHubUrl(selectedMember.github)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2"
@@ -323,10 +370,10 @@ const MemberCarousel = ({ members }: { members: Member[] }): JSX.Element => {
                     </a>
                   </Button>
                 )}
-                {getLinkedInUrl(selectedMember.linkedin || "") !== "#" && (
+                {getLinkedInUrl(selectedMember.linkedin) !== "#" && (
                   <Button asChild size="sm" variant="outline">
                     <a
-                      href={getLinkedInUrl(selectedMember.linkedin || "")}
+                      href={getLinkedInUrl(selectedMember.linkedin)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-2"
